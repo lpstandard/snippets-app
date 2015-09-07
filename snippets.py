@@ -13,9 +13,9 @@ def put(name, snippet):
     Returns the name and the snippets
     """
     logging.error("FIXME: Unimplemented - put({!r}, {!r})".format(name, snippet))
-    cursor = connection.cursor()
+    
     command = "insert into snippets values (%s, %s)"
-    cursor.execute(command, (name, snippet))
+    
     connection.commit()
     logging.debug("Snippet stored successfully.")
     return name, snippet
@@ -45,7 +45,7 @@ def main():
     put_parser.add_argument("snippet", help="The snippet text")
 
 
-    arguments = parser.parse_args(sys.argv[:])
+    arguments = parser.parse_args(sys.argv[1:])
     # Convert parsed arguments from Namespace to dictionary
     arguments = vars(arguments)
     command = arguments.pop("command")
@@ -60,18 +60,16 @@ def main():
     # Code without argument unpacking
     put(name="list", snippet="A sequence of things - created using []")
 
-# Identical code which uses argument unpacking
-arguments = {
-    "name": "list",
-    "snippet": "A sequence of things - created using []"
-}
-put(**arguments)    
+    # Identical code which uses argument unpacking
+    arguments = {
+        "name": "list",
+        "snippet": "A sequence of things - created using []"
+    }
+    put(**arguments)
+  
 if __name__ == "__main__":
     main()
     
-logging.debug("Connecting to PostgreSQL")
-connection = psycopg2.connect("dbname='snippets'")
-logging.debug("Database connection established.")
 
 
 
